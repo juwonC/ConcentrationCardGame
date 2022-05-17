@@ -37,23 +37,25 @@ int WINAPI WinMain
 		return 0;
 	}
 
+	RECT rc{ 0, 0, 1024, 780 };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
 	hwnd = CreateWindowEx(
 		NULL,
 		gClassName,
 		L"Concentration",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		1024,
-		480,
+		rc.right - rc.left,
+		rc.bottom - rc.top,
 		NULL,
 		NULL,
 		hInstance,
 		NULL
 	);
-
 	if (!hwnd)
 	{
-		MessageBox(hwnd, L"Failed to Create a Window", L"Error", MB_OK);
+		MessageBox(NULL, L"Failed to Create a Window", L"Error", MB_OK);
 		return 0;
 	}
 
@@ -71,16 +73,24 @@ int WINAPI WinMain
 	return static_cast<int>(msg.wParam);
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+void OnPaint(HWND hwnd)
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
 
+	hdc = BeginPaint(hwnd, &ps);
+
+	Gdiplus::Graphics graphics(hdc);
+
+	EndPaint(hwnd, &ps);
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
 	switch (message)
 	{
 		case WM_PAINT:
-			hdc = BeginPaint(hwnd, &ps);
-			EndPaint(hwnd, &ps);
+			OnPaint(hwnd);
 			break;
 
 		case WM_CLOSE:
