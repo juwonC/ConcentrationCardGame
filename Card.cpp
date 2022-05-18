@@ -1,7 +1,8 @@
 #include <string>
 #include "Card.h"
 
-Card::Card(Type type, int x, int y) :
+Card::Card(HWND hwnd, Type type, int x, int y) :
+	mHwnd(hwnd),
 	mX(x), 
 	mY(y),
 	mIsFront(false),
@@ -38,10 +39,16 @@ void Card::Flip(bool isFront)
 	mIsFront = isFront;
 }
 
-void Card::Draw(Gdiplus::Graphics graphics)
+void Card::Draw(Gdiplus::Graphics& graphics)
 {
 	if (mIsFront)
 	{
-
+		graphics.DrawImage(mFront.get(), mX, mY,
+			mFront->GetWidth(), mFront->GetHeight());
+	}
+	else
+	{
+		graphics.DrawImage(mBack.get(), mX, mY,
+			mBack->GetWidth(), mBack->GetHeight());
 	}
 }

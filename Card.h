@@ -16,16 +16,17 @@ private:
 	std::unique_ptr<Gdiplus::Image> mBack;
 	std::unique_ptr<Gdiplus::Image> mFront;
 
+	HWND mHwnd;
 	int mX;
 	int mY;
 	bool mIsFront;
 	Type mType;
 
 public:
-	Card(Type type, int x, int y);
+	Card(HWND hwnd, Type type, int x, int y);
 
 	bool CheckClicked();
 	void Flip(bool isFront);
-	void Draw(Gdiplus::Graphics graphics);
+	void Draw(Gdiplus::Graphics& graphics);
 };
 

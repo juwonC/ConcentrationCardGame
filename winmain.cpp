@@ -1,5 +1,7 @@
 #include <Windows.h>
 #include <gdiplus.h>
+#include "Card.h"
+
 #pragma comment (lib, "Gdiplus.lib")
 
 const wchar_t* gClassName = L"MyWindowClass";
@@ -81,6 +83,16 @@ void OnPaint(HWND hwnd)
 	hdc = BeginPaint(hwnd, &ps);
 
 	Gdiplus::Graphics graphics(hdc);
+
+	Card card(hwnd, Type::Wolf, 10, 10);
+	Card card1(hwnd, Type::Bear, 120, 10);
+	card.Draw(graphics);
+	card1.Draw(graphics);
+
+	card.Flip(true);
+
+	card.Draw(graphics);
+	card1.Draw(graphics);
 
 	EndPaint(hwnd, &ps);
 }
