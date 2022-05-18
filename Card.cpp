@@ -31,6 +31,8 @@ Card::Card(HWND hwnd, Type type, int x, int y) :
 
 bool Card::CheckClicked()
 {
+	// TODO : CheckClickedCard
+	
 	return false;
 }
 

@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <gdiplus.h>
-#include "Card.h"
+#include "Game.h"
 
 #pragma comment (lib, "Gdiplus.lib")
 
@@ -39,7 +39,7 @@ int WINAPI WinMain
 		return 0;
 	}
 
-	RECT rc{ 0, 0, 1024, 780 };
+	RECT rc{ 0, 0, 1024, 768 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	hwnd = CreateWindowEx(
@@ -83,6 +83,10 @@ void OnPaint(HWND hwnd)
 	hdc = BeginPaint(hwnd, &ps);
 
 	Gdiplus::Graphics graphics(hdc);
+
+	Game game;
+	game.Init(hwnd);
+	game.Draw(graphics);
 
 	Card card(hwnd, Type::Wolf, 10, 10);
 	Card card1(hwnd, Type::Bear, 120, 10);

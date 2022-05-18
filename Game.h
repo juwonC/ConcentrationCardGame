@@ -9,5 +9,18 @@ class Game
 
 private:
 	std::unique_ptr<Gdiplus::Image> mBackground;
+	int mFlipCount{};
+	HWND mHwnd{};
+	Card* mpSelectedCard{};
+
+public:
+	void Init(HWND hwnd);
+	void Release();
+
+	void Draw(Gdiplus::Graphics& graphics);
+	void OnClick();
+
+private:
+	void CreateCard();
 };
 
