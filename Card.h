@@ -19,17 +19,21 @@ namespace concentration
 		std::unique_ptr<Gdiplus::Image> mFront;
 
 		HWND mHwnd;
+		int mIndex;
 		int mX;
 		int mY;
 		bool mIsFront;
 		Type mType;
 
 	public:
-		Card(HWND hwnd, Type type, int x, int y);
+		Card(HWND hwnd, int index, Type type, int x, int y);
 
 		bool CheckClicked(int x, int y);
 		void Flip(bool isFront);
 		void Draw(Gdiplus::Graphics& graphics);
 		void Invalidate();
+
+		Type GetType() { return mType; }
+		int GetIndex() { return mIndex; }
 	};
 }

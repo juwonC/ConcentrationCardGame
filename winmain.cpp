@@ -40,14 +40,14 @@ int WINAPI WinMain
 		return 0;
 	}
 
-	RECT rc{ 0, 0, 1024, 768 };
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	RECT rc{ 0, 0, 1024, 800 };
+	AdjustWindowRect(&rc, WS_OVERLAPPED | WS_SYSMENU, FALSE);
 
 	hwnd = CreateWindowEx(
 		NULL,
 		gClassName,
-		L"Concentration",
-		WS_OVERLAPPEDWINDOW,
+		L"Concentration Game",
+		WS_OVERLAPPED | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		rc.right - rc.left,
 		rc.bottom - rc.top,

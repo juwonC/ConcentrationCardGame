@@ -3,8 +3,9 @@
 
 namespace concentration
 {
-	Card::Card(HWND hwnd, Type type, int x, int y) :
+	Card::Card(HWND hwnd, int index, Type type, int x, int y) :
 		mHwnd{ hwnd },
+		mIndex{ index },
 		mX{ x },
 		mY{ y },
 		mIsFront{ false },
@@ -33,12 +34,11 @@ namespace concentration
 
 	bool Card::CheckClicked(int x, int y)
 	{
-		if (x >= mX && y >= mY &&
-			static_cast<UINT>(x) <= mX + mFront->GetWidth() &&
-			static_cast<UINT>(y) <= mY + mFront->GetHeight())
+		Gdiplus::Rect rct(mX, mY, mFront->GetWidth(), mFront->GetHeight());
+
+		if(rct.Contains(x, y))
 		{
 			Flip(!mIsFront);
-
 			return true;
 		}
 
