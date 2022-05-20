@@ -1,10 +1,11 @@
 #include <Windows.h>
-#include <gdiplus.h>
 #include "Game.h"
 
 #pragma comment (lib, "Gdiplus.lib")
 
 const wchar_t* gClassName = L"MyWindowClass";
+
+concentration::Game game;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -61,6 +62,8 @@ int WINAPI WinMain
 		return 0;
 	}
 
+	game.Init(hwnd);
+
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
 
@@ -70,6 +73,8 @@ int WINAPI WinMain
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	game.Release();
 
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 	return static_cast<int>(msg.wParam);
@@ -84,19 +89,7 @@ void OnPaint(HWND hwnd)
 
 	Gdiplus::Graphics graphics(hdc);
 
-	Game game;
-	game.Init(hwnd);
 	game.Draw(graphics);
-
-	Card card(hwnd, Type::Wolf, 10, 10);
-	Card card1(hwnd, Type::Bear, 120, 10);
-	card.Draw(graphics);
-	card1.Draw(graphics);
-
-	card.Flip(true);
-
-	card.Draw(graphics);
-	card1.Draw(graphics);
 
 	EndPaint(hwnd, &ps);
 }
@@ -105,6 +98,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+		case WM_LBUTTONUP:
+			game.OnClick(LOWORD(lParam), HIWORD(lParam));
+			break;
+		
 		case WM_PAINT:
 			OnPaint(hwnd);
 			break;

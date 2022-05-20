@@ -3,30 +3,33 @@
 #include <gdiplus.h>
 #include <memory>
 
-enum class Type
+namespace concentration
 {
-	Wolf,
-	Dragon,
-	Bear
-};
+	enum class Type
+	{
+		Wolf,
+		Dragon,
+		Bear
+	};
 
-class Card
-{
-private:
-	std::unique_ptr<Gdiplus::Image> mBack;
-	std::unique_ptr<Gdiplus::Image> mFront;
+	class Card
+	{
+	private:
+		std::unique_ptr<Gdiplus::Image> mBack;
+		std::unique_ptr<Gdiplus::Image> mFront;
 
-	HWND mHwnd;
-	int mX;
-	int mY;
-	bool mIsFront;
-	Type mType;
+		HWND mHwnd;
+		int mX;
+		int mY;
+		bool mIsFront;
+		Type mType;
 
-public:
-	Card(HWND hwnd, Type type, int x, int y);
+	public:
+		Card(HWND hwnd, Type type, int x, int y);
 
-	bool CheckClicked();
-	void Flip(bool isFront);
-	void Draw(Gdiplus::Graphics& graphics);
-};
-
+		bool CheckClicked(int x, int y);
+		void Flip(bool isFront);
+		void Draw(Gdiplus::Graphics& graphics);
+		void Invalidate();
+	};
+}
