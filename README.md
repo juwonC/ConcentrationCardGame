@@ -1,6 +1,8 @@
 ConcentrationCardGame
 
+
 Card
+
     앞면 / 뒷면
     종류 ( 3종류 용,늑대,곰 )
     카드 위치 ( x, y )
@@ -8,6 +10,7 @@ Card
     그리기
 
 Game
+
     컨테이너 ( 8 x 5 = 40 )
 
     40장 랜덤 배치
