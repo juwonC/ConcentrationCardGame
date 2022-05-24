@@ -41,6 +41,8 @@ namespace concentration
 		format.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 		graphics.DrawString(std::to_wstring(mFlipCount).c_str(), -1,
 							&font, mCountRect, &format, &brush);
+
+		DrawScore(graphics);
 	}
 
 	void Game::OnClick(int x, int y)
@@ -90,6 +92,31 @@ namespace concentration
 						);
 
 						mpSelectedCard = nullptr;
+						
+						if (mCurrentPlayer == 1)
+						{
+							mPlayer1Score++;
+
+							RECT rct{
+									static_cast<LONG>(mScore1Rect.GetLeft()),
+									static_cast<LONG>(mScore1Rect.GetTop()),
+									static_cast<LONG>(mScore1Rect.GetRight()),
+									static_cast<LONG>(mScore1Rect.GetBottom())
+							};
+							InvalidateRect(mHwnd, &rct, false);
+						}
+						else
+						{
+							mPlayer2Score++;
+
+							RECT rct{
+									static_cast<LONG>(mScore2Rect.GetLeft()),
+									static_cast<LONG>(mScore2Rect.GetTop()),
+									static_cast<LONG>(mScore2Rect.GetRight()),
+									static_cast<LONG>(mScore2Rect.GetBottom())
+							};
+							InvalidateRect(mHwnd, &rct, false);
+						}
 					}
 					else
 					{
@@ -99,6 +126,8 @@ namespace concentration
 						mpSelectedCard->Flip(false);
 
 						mpSelectedCard = nullptr;
+
+						SwitchPlayer();
 					}
 				}
 			}
@@ -149,5 +178,48 @@ namespace concentration
 			posX += 100 + 10;
 		}
 
+	}
+
+	void Game::DrawScore(Gdiplus::Graphics& graphics)
+	{
+		Gdiplus::SolidBrush brush(Gdiplus::Color(190, 70, 60));
+		Gdiplus::Font font(L"±¼¸²", 20);
+
+		Gdiplus::PointF player1(895.0f, 200.0f);
+		graphics.DrawString(L"Player1: ", -1, &font, player1, &brush);
+
+		Gdiplus::PointF player2(895.0f, 400.0f);
+		graphics.DrawString(L"Player2: ", -1, &font, player2, &brush);
+
+		Gdiplus::StringFormat format1;
+		format1.SetAlignment(Gdiplus::StringAlignmentCenter);
+		format1.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+		graphics.DrawString(std::to_wstring(mPlayer1Score).c_str(), -1,
+			&font, mScore1Rect, &format1, &brush);
+
+		Gdiplus::StringFormat format2;
+		format2.SetAlignment(Gdiplus::StringAlignmentCenter);
+		format2.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+		graphics.DrawString(std::to_wstring(mPlayer2Score).c_str(), -1,
+			&font, mScore2Rect, &format2, &brush);
+	}
+
+	void Game::SwitchPlayer()
+	{
+		++mCurrentPlayer;
+
+		if (mCurrentPlayer > 2)
+		{
+			mCurrentPlayer = 1;
+		}
+
+		if (mCurrentPlayer == 1)
+		{
+			MessageBox(nullptr, L"Player1's Turn", L"Alarm", MB_OK);
+		}
+		else
+		{
+			MessageBox(nullptr, L"Player2's Turn", L"Alarm", MB_OK);
+		}
 	}
 }
