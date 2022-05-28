@@ -117,6 +117,18 @@ namespace concentration
 							};
 							InvalidateRect(mHwnd, &rct, false);
 						}
+
+						if (mDeck.empty())
+						{
+							if (mPlayer1Score > mPlayer2Score)
+							{
+								MessageBox(nullptr, L"Player1 Wins", L"Congratulation!", MB_OK);
+							}
+							else
+							{
+								MessageBox(nullptr, L"Player2 Wins", L"Congratulation!", MB_OK);
+							}
+						}
 					}
 					else
 					{
