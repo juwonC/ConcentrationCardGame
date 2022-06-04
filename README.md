@@ -1,6 +1,5 @@
 ConcentrationCardGame
 
-
 Card
 
     앞면 / 뒷면
@@ -29,3 +28,7 @@ Additional Feature
     카드 두 장을 뒤집어서 매칭되면 계속 플레이 -> 점수 +1
     카드 두 장이 매칭되지 않으면 다른 플레이어가 플레이
     모든 카드가 사라졌을때 점수가 높은 플레이어가 승리
+
+Refactoring
+    
+    Direct2D 적용
