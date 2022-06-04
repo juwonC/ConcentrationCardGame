@@ -142,6 +142,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="ComException.cpp" />
     <ClCompile Include="D2DFramework.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="BitmapManager.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="ComException.h" />
     <ClInclude Include="D2DFramework.h" />
     <ClInclude Include="Game.h" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "Actor.h"
-#include "D2DFramework.h"
+#include "ComException.h"
 #include "BitmapManager.h"
 
 Actor::Actor(D2DFramework* pFramework, LPCWSTR filename) :

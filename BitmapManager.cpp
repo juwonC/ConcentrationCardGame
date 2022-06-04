@@ -1,5 +1,5 @@
 #include "BitmapManager.h"
-#include "D2DFramework.h"
+#include "ComException.h"
 
 #pragma comment (lib, "WindowsCodecs.lib")
 
@@ -21,7 +21,7 @@ HRESULT BitmapManager::Initialize(ID2D1HwndRenderTarget* pRT)
 		CLSCTX_INPROC_SERVER,
 		IID_PPV_ARGS(mspWICFactory.GetAddressOf())
 		);
-	ThrowIfFailed(hr);
+	ThrowIfFailed(hr, "Can not Initialize COM!");
 
 	return S_OK;
 }
