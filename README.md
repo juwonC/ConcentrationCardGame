@@ -31,4 +31,4 @@ Additional Feature
 
 Refactoring
     
-    Direct2D 적용
+    GDI+ -> Direct2D, WIC, Actor Class, Bitmap Manager 적용
