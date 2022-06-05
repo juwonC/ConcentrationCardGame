@@ -1,33 +1,43 @@
-#include "Game.h"
 #include <string>
 #include <vector>
 #include <random>
+#include "Game.h"
 
 namespace concentration
 {
-	void Game::Init(HWND hwnd)
+	HRESULT Game::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 	{
-		mHwnd = hwnd;
-		mBackground = std::make_unique<Gdiplus::Image>(L"Data/bg_blank.png");
+		HRESULT hr;
+		hr = D2DFramework::Initialize(hInstance, title, width, height);
+		ThrowIfFailed(hr);
+
+		mspBackground = std::make_unique<Actor>(this, L"Data/bg_blank.png", 0.0f, 0.0f);
 
 		CreateCard();
 	}
 
 	void Game::Release()
 	{
-		mBackground.reset();
-
-		mDeck.clear();
-	}
-
-	void Game::Draw(Gdiplus::Graphics& graphics)
-	{
-		graphics.DrawImage(mBackground.get(), 0, 0,
-			mBackground->GetWidth(), mBackground->GetHeight());
-
 		for (auto& card : mDeck)
 		{
-			card.Draw(graphics);
+			card.reset();
+		}
+
+		mDeck.clear();
+		mspBackground.reset();
+
+		D2DFramework::Release();
+	}
+
+	void Game::Render()
+	{
+		mspRenderTarget->BeginDraw();
+		mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
+
+		mspBackground->Draw();
+		for (auto& card : mDeck)
+		{
+			card->Draw();
 		}
 
 		Gdiplus::PointF pos(895.0f, 20.0f);
@@ -42,11 +52,18 @@ namespace concentration
 		graphics.DrawString(std::to_wstring(mFlipCount).c_str(), -1,
 							&font, mCountRect, &format, &brush);
 
+		// TODO : DrawText
+		mspRenderTarget->DrawText(L"Å¬¸¯¼ö:", -1, &format, pos, &brush);
+		mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(), -1, &font, mCountRect, &format, &brush);
+
 		DrawScore(graphics);
+
+		mspRenderTarget->EndDraw();
 	}
 
 	void Game::OnClick(int x, int y)
 	{
+		// TODO : OnClick
 		Card* pCard{};
 		
 		for (auto& card : mDeck)
@@ -148,6 +165,8 @@ namespace concentration
 
 	void Game::CreateCard()
 	{
+		// TODO : CreateCard
+
 		std::vector<Type> types;
 		while (types.size() < static_cast<size_t>(BOARD_COLUMN * BOARD_ROW))
 		{
@@ -192,8 +211,10 @@ namespace concentration
 
 	}
 
-	void Game::DrawScore(Gdiplus::Graphics& graphics)
+	void Game::DrawScore()
 	{
+		// TODO : DrawScore
+
 		Gdiplus::SolidBrush brush(Gdiplus::Color(190, 70, 60));
 		Gdiplus::Font font(L"±¼¸²", 20);
 

@@ -28,15 +28,24 @@ namespace concentration
 				break;
 		}
 
-		mBack = std::make_unique<Gdiplus::Image>(L"Data/card_back.png");
-		mFront = std::make_unique<Gdiplus::Image>(filename.c_str());
+		// TODO : Card Initialize?
+
+		mspBack = std::make_unique<Actor>(this, L"Data/card_back.png", x, y);
+		mspFront = std::make_unique<Actor>(this, filename.c_str(), x, y);
 	}
 
-	bool Card::CheckClicked(int x, int y)
+	bool Card::CheckClicked(POINT& pt)
 	{
-		Gdiplus::Rect rct(mX, mY, mFront->GetWidth(), mFront->GetHeight());
+		auto size{ mpBitmap->GetPixelSize() };
+		
+		D2D1_RECT_F rect{
+		mX, mY,
+		static_cast<float>(mX + size.width),
+		static_cast<float>(mY + size.height)
+		};
 
-		if(rct.Contains(x, y))
+		if(pt.x >= rect.left && pt.x <= rect.right &&
+			pt.y >= rect.top && pt.y <= rect.bottom)
 		{
 			Flip(!mIsFront);
 			return true;
@@ -51,24 +60,29 @@ namespace concentration
 		Invalidate();
 	}
 
-	void Card::Draw(Gdiplus::Graphics& graphics)
+	void Card::Draw()
 	{
+		// TODO : Draw?
+
 		if (mIsFront)
 		{
-			graphics.DrawImage(mFront.get(), mX, mY,
-				mFront->GetWidth(), mFront->GetHeight());
+			mspFront->Draw();
 		}
 		else
 		{
-			graphics.DrawImage(mBack.get(), mX, mY,
-				mBack->GetWidth(), mBack->GetHeight());
+			mspBack->Draw();
 		}
 	}
 	void Card::Invalidate()
 	{
+		// TODO : Invalidate?
+
+		auto pRT = mpFramework->GetRenderTarget();
+		auto size = mpBitmap->GetPixelSize();
+
 		RECT rct{ mX, mY, 
-			static_cast<LONG>(mX + mBack->GetWidth()), 
-			static_cast<LONG>(mY + mBack->GetHeight()) };
+			static_cast<LONG>(mX + size.width), 
+			static_cast<LONG>(mY + size.height) };
 
 		InvalidateRect(mHwnd, &rct, false);
 	}

@@ -1,5 +1,7 @@
 #include <windows.h>
-#include "D2DFramework.h"
+#include "Game.h"
+
+concentration::Game myFramework;
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -11,8 +13,6 @@ int WINAPI WinMain(
 
 	try
 	{
-		D2DFramework myFramework;
-
 		myFramework.Initialize(hInstance);
 		
 		result = myFramework.GameLoop();

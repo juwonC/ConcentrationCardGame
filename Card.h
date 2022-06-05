@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <gdiplus.h>
 #include <memory>
+#include "Actor.h"
 
 namespace concentration
 {
@@ -12,11 +13,11 @@ namespace concentration
 		Bear
 	};
 
-	class Card
+	class Card : public Actor
 	{
 	private:
-		std::unique_ptr<Gdiplus::Image> mBack;
-		std::unique_ptr<Gdiplus::Image> mFront;
+		std::unique_ptr<Actor> mspBack;
+		std::unique_ptr<Actor> mspFront;
 
 		HWND mHwnd;
 		int mIndex;
@@ -28,9 +29,9 @@ namespace concentration
 	public:
 		Card(HWND hwnd, int index, Type type, int x, int y);
 
-		bool CheckClicked(int x, int y);
+		bool CheckClicked(POINT& pt);
 		void Flip(bool isFront);
-		void Draw(Gdiplus::Graphics& graphics);
+		virtual void Draw() override;
 		void Invalidate();
 
 		Type GetType() { return mType; }

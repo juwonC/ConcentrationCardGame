@@ -1,5 +1,7 @@
 #include <sstream>
 #include "D2DFramework.h"
+#include "BitmapManager.h"
+#include "dwrite.h"
 
 #pragma comment (lib, "d2d1.lib")
 
@@ -59,6 +61,29 @@ HRESULT D2DFramework::InitD2D()
 	);
 	ThrowIfFailed(hr);
 
+	hr = DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(mspDWriteFactory.GetAddressOf())
+	);
+	ThrowIfFailed(hr);
+
+	hr = mspDWriteFactory->CreateTextFormat(
+		L"Gabriola",
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		20.0f,
+		L"en-us",
+		mspTextFormat.GetAddressOf()
+	);
+
+	hr = mspTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	hr = mspTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+
+	ThrowIfFailed(hr);
+
 	return CreateDevicResources();
 }
 
@@ -77,6 +102,12 @@ HRESULT D2DFramework::CreateDevicResources()
 	);
 	ThrowIfFailed(hr);
 	
+	hr = mspRenderTarget->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Red),
+		mspBrush.GetAddressOf()
+	);
+	ThrowIfFailed(hr);
+
 	return hr;
 }
 
@@ -84,11 +115,17 @@ HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 {
 	HRESULT hr;
 	
+	hr = CoInitialize(nullptr);
+	ThrowIfFailed(hr);
+
 	hr = InitWindow(hInstance, title, width, height);
 	ThrowIfFailed(hr);
 
 	hr = InitD2D();
 	ThrowIfFailed(hr);
+
+	hr = BitmapManager::Instance().Initialize(mspRenderTarget.Get());
+	ThrowIfFailed(hr, "Failed to Initialize BitmapManager");
 
 	ShowWindow(mHwnd, SW_SHOW);
 	UpdateWindow(mHwnd);
@@ -98,8 +135,15 @@ HRESULT D2DFramework::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width,
 
 void D2DFramework::Release()
 {
+	BitmapManager::Instance().Release();
+	
+	mspBrush.Reset();
 	mspRenderTarget.Reset();
+	mspTextFormat.Reset();
+	mspDWriteFactory.Reset();
 	mspD2DFactory.Reset();
+
+	CoUninitialize();
 }
 
 int D2DFramework::GameLoop()
