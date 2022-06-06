@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d2d1.h>
+#include <dwrite.h>
 #include <wrl/client.h>
 #include "ComException.h"
 
@@ -24,7 +25,7 @@ protected:
 
 public:
 	virtual HRESULT Initialize(HINSTANCE hInstance, LPCWSTR title = L"D2DFramework", 
-		UINT width = 1024, UINT height = 768);
+		UINT width = 1024, UINT height = 800);
 	virtual void Release();
 	virtual void Render();
 	virtual int GameLoop();

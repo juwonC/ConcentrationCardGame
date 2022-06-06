@@ -16,8 +16,10 @@ namespace concentration
 		const D2D1_RECT_F mScore2Rect{ 885.0f, 450.0f, 120.0f, 30.f };
 
 	private:
-		std::unique_ptr<Actor> mspBackground;
-		std::list<std::unique_ptr<Actor>> mDeck;
+		std::shared_ptr<Actor> mspBackground;
+		
+		std::list<std::shared_ptr<Actor>> mDeck;
+
 		int mFlipCount{};
 		int mCurrentPlayer{1};
 		int mPlayer1Score{};
@@ -27,11 +29,11 @@ namespace concentration
 
 	public:
 		virtual HRESULT Initialize(HINSTANCE hInstance, LPCWSTR title = L"Concentration",
-			UINT width = 1024, UINT height = 768) override;
+			UINT width = 1024, UINT height = 800) override;
 		
 		virtual void Release() override;
 		virtual void Render() override;
-		void OnClick(int x, int y);
+		//void OnClick(int x, int y);
 
 	private:
 		void CreateCard();

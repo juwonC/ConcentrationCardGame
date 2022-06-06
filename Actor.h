@@ -23,10 +23,8 @@ public:
 
 private:
 	void Draw(float x, float y, float opacity = 1.0f);
-	// public 쪽의 함수들은 사용하기 편하게 매개변수들을 없애고 제대로된 함수는 private에 만든다
 
 public:
-	// 2개의 float으로 된 vector를 반환하는 타입
 	inline D2D_VECTOR_2F GetPosition() const
 	{
 		return D2D_VECTOR_2F{ mX, mY };

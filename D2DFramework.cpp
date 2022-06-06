@@ -1,9 +1,12 @@
 #include <sstream>
 #include "D2DFramework.h"
 #include "BitmapManager.h"
-#include "dwrite.h"
+#include "Game.h"
 
 #pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "dwrite.lib")
+
+concentration::Game myGame;
 
 HRESULT D2DFramework::InitWindow(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -69,19 +72,18 @@ HRESULT D2DFramework::InitD2D()
 	ThrowIfFailed(hr);
 
 	hr = mspDWriteFactory->CreateTextFormat(
-		L"Gabriola",
+		L"Calibri",
 		NULL,
-		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_WEIGHT_LIGHT,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
 		20.0f,
 		L"en-us",
 		mspTextFormat.GetAddressOf()
 	);
+	ThrowIfFailed(hr);
 
 	hr = mspTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-	hr = mspTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-
 	ThrowIfFailed(hr);
 
 	return CreateDevicResources();
@@ -206,6 +208,10 @@ LRESULT CALLBACK D2DFramework::WindowProc(HWND hwnd, UINT message, WPARAM wParam
 	
 	switch (message)
 	{
+		//case WM_LBUTTONDOWN:
+		//	myGame.OnClick(LOWORD(lParam), HIWORD(lParam));
+		//	break;
+
 		case WM_CLOSE:
 			DestroyWindow(hwnd);
 			break;

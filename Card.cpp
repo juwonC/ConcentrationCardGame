@@ -3,35 +3,30 @@
 
 namespace concentration
 {
-	Card::Card(HWND hwnd, int index, Type type, int x, int y) :
-		mHwnd{ hwnd },
-		mIndex{ index },
-		mX{ x },
-		mY{ y },
-		mIsFront{ false },
-		mType{ type }
+	Card::Card(D2DFramework* pFramework, LPCWSTR filename,HWND hwnd, int index, Type type, int x, int y) : Actor(pFramework, filename)
 	{
-		std::wstring filename(L"Data/card_creature_");
+		mHwnd = hwnd;
+		mIndex = index;
+		mX = x;
+		mY = y;
+		mIsFront = false;
+		mType = type;
 
 		switch (type)
 		{
 			case Type::Wolf:
-				filename += L"wolf.png";
+				filename = L"Data/card_creature_wolf.png";
 				break;
 
 			case Type::Dragon:
-				filename += L"dragon.png";
+				filename = L"Data/card_creature_dragon.png";
 				break;
 
 			case Type::Bear:
-				filename += L"bear.png";
+				filename = L"Data/card_creature_bear.png";
 				break;
 		}
 
-		// TODO : Card Initialize?
-
-		mspBack = std::make_unique<Actor>(this, L"Data/card_back.png", x, y);
-		mspFront = std::make_unique<Actor>(this, filename.c_str(), x, y);
 	}
 
 	bool Card::CheckClicked(POINT& pt)
@@ -62,17 +57,9 @@ namespace concentration
 
 	void Card::Draw()
 	{
-		// TODO : Draw?
-
-		if (mIsFront)
-		{
-			mspFront->Draw();
-		}
-		else
-		{
-			mspBack->Draw();
-		}
+		Actor::Draw();
 	}
+
 	void Card::Invalidate()
 	{
 		// TODO : Invalidate?
@@ -80,8 +67,8 @@ namespace concentration
 		auto pRT = mpFramework->GetRenderTarget();
 		auto size = mpBitmap->GetPixelSize();
 
-		RECT rct{ mX, mY, 
-			static_cast<LONG>(mX + size.width), 
+		RECT rct{ mX, mY,
+			static_cast<LONG>(mX + size.width),
 			static_cast<LONG>(mY + size.height) };
 
 		InvalidateRect(mHwnd, &rct, false);
