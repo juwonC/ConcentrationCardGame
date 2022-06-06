@@ -47,13 +47,15 @@ namespace concentration
 
 		// TODO : DrawText
 
-		static const WCHAR click[] = L"Clicked: ";
+		static const WCHAR click[] = L"Clicks : ";
+
+		D2D1_SIZE_F renderTargetSize = mspRenderTarget->GetSize();
 
 		mspRenderTarget->DrawText(
 			click,
 			ARRAYSIZE(click) - 1,
 			mspTextFormat.Get(), 
-			D2D1::RectF(895.0f, 20.0f, 900.0f, 30.0f), 
+			D2D1::RectF(900.0f, 20.0f, renderTargetSize.width, renderTargetSize.height),
 			mspBrush.Get()
 		);
 		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),

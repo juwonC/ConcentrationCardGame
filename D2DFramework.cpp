@@ -83,8 +83,11 @@ HRESULT D2DFramework::InitD2D()
 	);
 	ThrowIfFailed(hr);
 
-	hr = mspTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-	ThrowIfFailed(hr);
+	//hr = mspTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	//ThrowIfFailed(hr);
+
+	//hr = mspTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	//ThrowIfFailed(hr);
 
 	return CreateDevicResources();
 }
