@@ -45,23 +45,7 @@ namespace concentration
 			card->Draw();
 		}
 
-		// TODO : DrawText
-
-		static const WCHAR click[] = L"Clicks : ";
-
-		D2D1_SIZE_F renderTargetSize = mspRenderTarget->GetSize();
-
-		mspRenderTarget->DrawText(
-			click,
-			ARRAYSIZE(click) - 1,
-			mspTextFormat.Get(), 
-			D2D1::RectF(900.0f, 20.0f, renderTargetSize.width, renderTargetSize.height),
-			mspBrush.Get()
-		);
-		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),
-		//	-1, mspTextFormat.Get(), mCountRect, mspBrush.Get());
-
-		//DrawScore();
+		DrawScore();
 
 		hr = mspRenderTarget->EndDraw();
 		if (hr == D2DERR_RECREATE_TARGET)
@@ -227,16 +211,41 @@ namespace concentration
 
 	void Game::DrawScore()
 	{
-		// TODO : DrawScore
+		static const WCHAR click[] = L"Clicks : ";
 
-		//Gdiplus::SolidBrush brush(Gdiplus::Color(190, 70, 60));
-		//Gdiplus::Font font(L"±¼¸²", 20);
+		D2D1_SIZE_F renderTargetSize = mspRenderTarget->GetSize();
 
-		//Gdiplus::PointF player1(895.0f, 200.0f);
-		//graphics.DrawString(L"Player1: ", -1, &font, player1, &brush);
+		mspRenderTarget->DrawText(
+			click,
+			ARRAYSIZE(click) - 1,
+			mspTextFormat.Get(),
+			D2D1::RectF(900.0f, 20.0f, renderTargetSize.width, renderTargetSize.height),
+			mspBrush.Get()
+		);
 
-		//Gdiplus::PointF player2(895.0f, 400.0f);
-		//graphics.DrawString(L"Player2: ", -1, &font, player2, &brush);
+		// TODO : Draw FlipCount, Scores
+		// 
+		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),
+		//	-1, mspTextFormat.Get(), mCountRect, mspBrush.Get());
+
+		static const WCHAR player1[] = L"Player1 : ";
+		static const WCHAR player2[] = L"Player2 : ";
+
+		mspRenderTarget->DrawText(
+			player1,
+			ARRAYSIZE(player1) - 1,
+			mspTextFormat.Get(),
+			D2D1::RectF(900.0f, 200.0f, renderTargetSize.width, renderTargetSize.height),
+			mspBrush.Get()
+		);
+
+		mspRenderTarget->DrawText(
+			player2,
+			ARRAYSIZE(player2) - 1,
+			mspTextFormat.Get(),
+			D2D1::RectF(900.0f, 400.0f, renderTargetSize.width, renderTargetSize.height),
+			mspBrush.Get()
+		);
 
 		//Gdiplus::StringFormat format1;
 		//format1.SetAlignment(Gdiplus::StringAlignmentCenter);
