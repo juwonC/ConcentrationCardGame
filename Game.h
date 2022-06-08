@@ -16,15 +16,13 @@ namespace concentration
 		const D2D1_RECT_F mScore2Rect{ 885.0f, 450.0f, 120.0f, 30.f };
 
 	private:
-		std::shared_ptr<Actor> mspBackground;
-		
-		std::list<std::shared_ptr<Actor>> mDeck;
+		std::unique_ptr<Actor> mspBackground;
+		std::list<std::shared_ptr<Card>> mDeck;
 
 		int mFlipCount{};
 		int mCurrentPlayer{1};
 		int mPlayer1Score{};
 		int mPlayer2Score{};
-		HWND mHwnd{};
 		Card* mpSelectedCard{};
 
 	public:
@@ -33,7 +31,8 @@ namespace concentration
 		
 		virtual void Release() override;
 		virtual void Render() override;
-		//void OnClick(int x, int y);
+		//virtual int GameLoop() override;
+		void OnClick(int x, int y);
 
 	private:
 		void CreateCard();

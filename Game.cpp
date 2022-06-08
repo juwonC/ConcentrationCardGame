@@ -13,20 +13,21 @@ namespace concentration
 
 		mspBackground = std::make_unique<Actor>(this, L"Data/bg_blank.png", 0.0f, 0.0f);
 
-		CreateCard();
+		//CreateCard();
 
 		return S_OK;
 	}
 
 	void Game::Release()
 	{
+		mspBackground.reset();
+		
 		for (auto& card : mDeck)
 		{
 			card.reset();
 		}
 
 		mDeck.clear();
-		mspBackground.reset();
 
 		D2DFramework::Release();
 	}
@@ -37,6 +38,7 @@ namespace concentration
 		
 		mspRenderTarget->BeginDraw();
 		mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
+		mspRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 		mspBackground->Draw();
 
@@ -54,118 +56,124 @@ namespace concentration
 		}
 	}
 
-	//void Game::OnClick(int x, int y)
+	//int Game::GameLoop()
 	//{
-	//	// TODO : OnClick
-
-	//	Card* pCard;
-
-	//	//for (auto& card : mDeck)
-	//	//{
-	//	//	if (CheckClicked())
-	//	//	{
-	//	//		pCard = reinterpret_cast<Card*>(&card);
-	//	//		break;
-	//	//	}
-	//	//}
-
-	//	if (pCard)
-	//	{
-	//		mFlipCount++;
-
-	//		RECT rct{
-	//				static_cast<LONG>(mCountRect.left),
-	//				static_cast<LONG>(mCountRect.top),
-	//				static_cast<LONG>(mCountRect.right),
-	//				static_cast<LONG>(mCountRect.bottom)
-	//		};
-	//		InvalidateRect(mHwnd, &rct, false);
-
-	//		if (mpSelectedCard == nullptr)
-	//		{
-	//			mpSelectedCard = pCard;
-	//		}
-	//		else
-	//		{
-	//			if (mpSelectedCard == pCard)
-	//			{
-	//				mpSelectedCard = nullptr;
-	//			}
-	//			else
-	//			{
-	//				if (pCard->GetType() == mpSelectedCard->GetType())
-	//				{
-	//					pCard->Invalidate();
-	//					mpSelectedCard->Invalidate();
-
-	//					mDeck.remove_if([&](Card& card) {
-	//						return (card.GetIndex() == mpSelectedCard->GetIndex() || card.GetIndex() == pCard->GetIndex());
-	//					}
-	//					);
-
-	//					mpSelectedCard = nullptr;
-
-	//					if (mCurrentPlayer == 1)
-	//					{
-	//						mPlayer1Score++;
-
-	//						RECT rct{
-	//								static_cast<LONG>(mScore1Rect.left),
-	//								static_cast<LONG>(mScore1Rect.top),
-	//								static_cast<LONG>(mScore1Rect.right),
-	//								static_cast<LONG>(mScore1Rect.bottom)
-	//						};
-	//						InvalidateRect(mHwnd, &rct, false);
-	//					}
-	//					else
-	//					{
-	//						mPlayer2Score++;
-
-	//						RECT rct{
-	//								static_cast<LONG>(mScore2Rect.left),
-	//								static_cast<LONG>(mScore2Rect.top),
-	//								static_cast<LONG>(mScore2Rect.right),
-	//								static_cast<LONG>(mScore2Rect.bottom)
-	//						};
-	//						InvalidateRect(mHwnd, &rct, false);
-	//					}
-
-	//					if (mDeck.empty())
-	//					{
-	//						if (mPlayer1Score > mPlayer2Score)
-	//						{
-	//							MessageBox(nullptr, L"Player1 Wins", L"Congratulation!", MB_OK);
-	//						}
-	//						else
-	//						{
-	//							MessageBox(nullptr, L"Player2 Wins", L"Congratulation!", MB_OK);
-	//						}
-	//					}
-	//				}
-	//				else
-	//				{
-	//					UpdateWindow(mHwnd);
-	//					Sleep(500);
-	//					pCard->Flip(false);
-	//					mpSelectedCard->Flip(false);
-
-	//					mpSelectedCard = nullptr;
-
-	//					SwitchPlayer();
-	//				}
-	//			}
-	//		}
-	//	}
+	//	return 0;
 	//}
+
+	void Game::OnClick(int x, int y)
+	{
+		// TODO : OnClick
+
+		Card* pCard{};
+
+		for (auto& card : mDeck)
+		{
+			if (card->CheckClicked(
+				static_cast<float>(x), 
+				static_cast<float>(y)))
+			{
+				pCard = card.get();
+				break;
+			}
+		}
+
+		if (pCard)
+		{
+			mFlipCount++;
+
+			//RECT rct{
+			//		static_cast<LONG>(mCountRect.left),
+			//		static_cast<LONG>(mCountRect.top),
+			//		static_cast<LONG>(mCountRect.right),
+			//		static_cast<LONG>(mCountRect.bottom)
+			//};
+			//InvalidateRect(mHwnd, &rct, false);
+
+			if (mpSelectedCard == nullptr)
+			{
+				mpSelectedCard = pCard;
+			}
+			else
+			{
+				if (mpSelectedCard == pCard)
+				{
+					mpSelectedCard = nullptr;
+				}
+				else
+				{
+					if (pCard->GetType() == mpSelectedCard->GetType())
+					{
+						//pCard->Invalidate();
+						//mpSelectedCard->Invalidate();
+
+						mDeck.remove_if([&](auto& card) {
+							return (card->GetIndex() == mpSelectedCard->GetIndex() || card->GetIndex() == pCard->GetIndex());
+						}
+						);
+
+						mpSelectedCard = nullptr;
+
+						if (mCurrentPlayer == 1)
+						{
+							mPlayer1Score++;
+
+							//RECT rct{
+							//		static_cast<LONG>(mScore1Rect.left),
+							//		static_cast<LONG>(mScore1Rect.top),
+							//		static_cast<LONG>(mScore1Rect.right),
+							//		static_cast<LONG>(mScore1Rect.bottom)
+							//};
+							//InvalidateRect(mHwnd, &rct, false);
+						}
+						else
+						{
+							mPlayer2Score++;
+
+							//RECT rct{
+							//		static_cast<LONG>(mScore2Rect.left),
+							//		static_cast<LONG>(mScore2Rect.top),
+							//		static_cast<LONG>(mScore2Rect.right),
+							//		static_cast<LONG>(mScore2Rect.bottom)
+							//};
+							//InvalidateRect(mHwnd, &rct, false);
+						}
+
+						if (mDeck.empty())
+						{
+							if (mPlayer1Score > mPlayer2Score)
+							{
+								MessageBox(nullptr, L"Player1 Wins", L"Congratulation!", MB_OK);
+							}
+							else
+							{
+								MessageBox(nullptr, L"Player2 Wins", L"Congratulation!", MB_OK);
+							}
+						}
+					}
+					else
+					{
+						Render();
+						//UpdateWindow(mHwnd);
+						Sleep(500);
+						pCard->Flip(false);
+						mpSelectedCard->Flip(false);
+
+						mpSelectedCard = nullptr;
+
+						SwitchPlayer();
+					}
+				}
+			}
+		}
+	}
 	
 
 	void Game::CreateCard()
 	{
-		// TODO : CreateCard
-		RECT rect{};
-		GetClientRect(mHwnd, &rect);
-
+		// TODO : Fix CreateCard
 		std::vector<Type> types;
+
 		while (types.size() < static_cast<size_t>(BOARD_COLUMN * BOARD_ROW))
 		{
 			int temp = types.size() % 6;
@@ -195,16 +203,19 @@ namespace concentration
 
 		int posX{ 15 }, posY{ 10 };
 		int index{};
+
 		for (int x = 0; x < BOARD_COLUMN; ++x)
 		{
 			posY = 10;
 
 			for (int y = 0; y < BOARD_ROW; ++y)
 			{				
-				mDeck.push_back(std::make_shared<Card>(this, L"Data/card_back.png", mHwnd, index, types[index++], posX, posY));
-				posY += 140 + 10 + rect.bottom;
+				mDeck.push_back(std::make_shared<Card>(this, index, types[index++], 
+					static_cast<float>(posX), 
+					static_cast<float>(posY)));
+				posY += 140 + 10;
 			}
-			posX += 100 + 10 + rect.right;
+			posX += 100 + 10;
 		}
 
 	}

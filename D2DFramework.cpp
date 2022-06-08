@@ -211,10 +211,6 @@ LRESULT CALLBACK D2DFramework::WindowProc(HWND hwnd, UINT message, WPARAM wParam
 	
 	switch (message)
 	{
-		//case WM_LBUTTONDOWN:
-		//	myGame.OnClick(LOWORD(lParam), HIWORD(lParam));
-		//	break;
-
 		case WM_CLOSE:
 			DestroyWindow(hwnd);
 			break;

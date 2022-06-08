@@ -16,21 +16,20 @@ namespace concentration
 	class Card : public Actor
 	{
 	private:
-		std::shared_ptr<Actor> mspBack;
-		std::shared_ptr<Actor> mspFront;
+		ID2D1Bitmap* mpFront;
 
-		HWND mHwnd;
+		//HWND mHwnd;
 		int mIndex;
 		bool mIsFront;
 		Type mType;
 
 	public:
-		Card(D2DFramework* pFramework, LPCWSTR filename, HWND hwnd, int index, Type type, int x, int y);
+		Card(D2DFramework* pFramework, int index, Type type, float x, float y);
 
-		bool CheckClicked(POINT& pt);
+		bool CheckClicked(float x, float y);
 		void Flip(bool isFront);
 		virtual void Draw() override;
-		void Invalidate();
+		//void Invalidate();
 
 		Type GetType() { return mType; }
 		int GetIndex() { return mIndex; }
