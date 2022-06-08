@@ -17,15 +17,15 @@ namespace concentration
 		switch (type)
 		{
 			case Type::Wolf:
-				filename = L"wolf.png";
+				filename += L"wolf.png";
 				break;
 
 			case Type::Dragon:
-				filename = L"dragon.png";
+				filename += L"dragon.png";
 				break;
 
 			case Type::Bear:
-				filename = L"bear.png";
+				filename += L"bear.png";
 				break;
 		}
 

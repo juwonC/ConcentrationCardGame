@@ -13,7 +13,7 @@ namespace concentration
 
 		mspBackground = std::make_unique<Actor>(this, L"Data/bg_blank.png", 0.0f, 0.0f);
 
-		//CreateCard();
+		CreateCard();
 
 		return S_OK;
 	}
@@ -27,7 +27,7 @@ namespace concentration
 			card.reset();
 		}
 
-		mDeck.clear();
+		//mDeck.clear();
 
 		D2DFramework::Release();
 	}
