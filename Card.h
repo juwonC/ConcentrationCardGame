@@ -26,7 +26,6 @@ namespace concentration
 		bool CheckClicked(float x, float y);
 		void Flip(bool isFront);
 		virtual void Draw() override;
-		//void Invalidate();
 
 		Type GetType() { return mType; }
 		int GetIndex() { return mIndex; }

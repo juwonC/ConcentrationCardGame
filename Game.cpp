@@ -20,14 +20,13 @@ namespace concentration
 
 	void Game::Release()
 	{
-		mspBackground.reset();
-		
 		for (auto& card : mDeck)
 		{
 			card.reset();
 		}
 
-		//mDeck.clear();
+		mDeck.clear();
+		mspBackground.reset();
 
 		D2DFramework::Release();
 	}
@@ -56,15 +55,8 @@ namespace concentration
 		}
 	}
 
-	//int Game::GameLoop()
-	//{
-	//	return 0;
-	//}
-
 	void Game::OnClick(int x, int y)
 	{
-		// TODO : OnClick
-
 		Card* pCard{};
 
 		for (auto& card : mDeck)
@@ -88,7 +80,6 @@ namespace concentration
 			//		static_cast<LONG>(mCountRect.right),
 			//		static_cast<LONG>(mCountRect.bottom)
 			//};
-			//InvalidateRect(mHwnd, &rct, false);
 
 			if (mpSelectedCard == nullptr)
 			{
@@ -104,9 +95,6 @@ namespace concentration
 				{
 					if (pCard->GetType() == mpSelectedCard->GetType())
 					{
-						//pCard->Invalidate();
-						//mpSelectedCard->Invalidate();
-
 						mDeck.remove_if([&](auto& card) {
 							return (card->GetIndex() == mpSelectedCard->GetIndex() || card->GetIndex() == pCard->GetIndex());
 						}
@@ -124,7 +112,6 @@ namespace concentration
 							//		static_cast<LONG>(mScore1Rect.right),
 							//		static_cast<LONG>(mScore1Rect.bottom)
 							//};
-							//InvalidateRect(mHwnd, &rct, false);
 						}
 						else
 						{
@@ -136,7 +123,6 @@ namespace concentration
 							//		static_cast<LONG>(mScore2Rect.right),
 							//		static_cast<LONG>(mScore2Rect.bottom)
 							//};
-							//InvalidateRect(mHwnd, &rct, false);
 						}
 
 						if (mDeck.empty())
@@ -154,7 +140,6 @@ namespace concentration
 					else
 					{
 						Render();
-						//UpdateWindow(mHwnd);
 						Sleep(500);
 						pCard->Flip(false);
 						mpSelectedCard->Flip(false);
@@ -171,7 +156,6 @@ namespace concentration
 
 	void Game::CreateCard()
 	{
-		// TODO : Fix CreateCard
 		std::vector<Type> types;
 
 		while (types.size() < static_cast<size_t>(BOARD_COLUMN * BOARD_ROW))
@@ -234,11 +218,6 @@ namespace concentration
 			mspBrush.Get()
 		);
 
-		// TODO : Draw FlipCount, Scores
-		// 
-		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),
-		//	-1, mspTextFormat.Get(), mCountRect, mspBrush.Get());
-
 		static const WCHAR player1[] = L"Player1 : ";
 		static const WCHAR player2[] = L"Player2 : ";
 
@@ -257,6 +236,13 @@ namespace concentration
 			D2D1::RectF(900.0f, 400.0f, renderTargetSize.width, renderTargetSize.height),
 			mspBrush.Get()
 		);
+
+		// TODO : Draw FlipCount, Scores
+		// 
+		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),
+		//	-1, mspTextFormat.Get(), mCountRect, mspBrush.Get());
+
+
 
 		//Gdiplus::StringFormat format1;
 		//format1.SetAlignment(Gdiplus::StringAlignmentCenter);

@@ -31,7 +31,6 @@ namespace concentration
 		
 		virtual void Release() override;
 		virtual void Render() override;
-		//virtual int GameLoop() override;
 		void OnClick(int x, int y);
 
 	private:

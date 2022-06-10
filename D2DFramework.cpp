@@ -207,10 +207,14 @@ void D2DFramework::ShowErrorMsg(LPCWSTR msg, HRESULT error, LPCWSTR title)
 
 LRESULT CALLBACK D2DFramework::WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	D2DFramework* pFramework = reinterpret_cast<D2DFramework*>((GetWindowLongPtr(hwnd, GWLP_USERDATA)));
+	concentration::Game* game = reinterpret_cast<concentration::Game*>((GetWindowLongPtr(hwnd, GWLP_USERDATA)));
 	
 	switch (message)
 	{
+		case WM_LBUTTONUP:
+			game->OnClick(LOWORD(lParam), HIWORD(lParam));
+			break;
+		
 		case WM_CLOSE:
 			DestroyWindow(hwnd);
 			break;

@@ -47,7 +47,6 @@ namespace concentration
 	void Card::Flip(bool isFront)
 	{
 		mIsFront = isFront;
-		//Invalidate();
 	}
 
 	void Card::Draw()
@@ -71,18 +70,4 @@ namespace concentration
 			pRT->DrawBitmap(mpBitmap, rect, mOpacity);
 		}
 	}
-
-	//void Card::Invalidate()
-	//{
-	//	// TODO : Invalidate?
-
-	//	auto pRT = mpFramework->GetRenderTarget();
-	//	auto size = mpBitmap->GetPixelSize();
-
-	//	RECT rct{ mX, mY,
-	//		static_cast<LONG>(mX + size.width),
-	//		static_cast<LONG>(mY + size.height) };
-
-	//	InvalidateRect(mHwnd, &rct, false);
-	//}
 }
