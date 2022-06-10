@@ -37,7 +37,6 @@ namespace concentration
 		
 		mspRenderTarget->BeginDraw();
 		mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
-		mspRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 		mspBackground->Draw();
 
@@ -74,13 +73,6 @@ namespace concentration
 		{
 			mFlipCount++;
 
-			//RECT rct{
-			//		static_cast<LONG>(mCountRect.left),
-			//		static_cast<LONG>(mCountRect.top),
-			//		static_cast<LONG>(mCountRect.right),
-			//		static_cast<LONG>(mCountRect.bottom)
-			//};
-
 			if (mpSelectedCard == nullptr)
 			{
 				mpSelectedCard = pCard;
@@ -105,24 +97,10 @@ namespace concentration
 						if (mCurrentPlayer == 1)
 						{
 							mPlayer1Score++;
-
-							//RECT rct{
-							//		static_cast<LONG>(mScore1Rect.left),
-							//		static_cast<LONG>(mScore1Rect.top),
-							//		static_cast<LONG>(mScore1Rect.right),
-							//		static_cast<LONG>(mScore1Rect.bottom)
-							//};
 						}
 						else
 						{
 							mPlayer2Score++;
-
-							//RECT rct{
-							//		static_cast<LONG>(mScore2Rect.left),
-							//		static_cast<LONG>(mScore2Rect.top),
-							//		static_cast<LONG>(mScore2Rect.right),
-							//		static_cast<LONG>(mScore2Rect.bottom)
-							//};
 						}
 
 						if (mDeck.empty())
@@ -206,55 +184,64 @@ namespace concentration
 
 	void Game::DrawScore()
 	{
-		static const WCHAR click[] = L"Clicks : ";
+		const WCHAR click[] = L"Clicks : ";
+		const WCHAR player1[] = L"Player1 : ";
+		const WCHAR player2[] = L"Player2 : ";
 
-		D2D1_SIZE_F renderTargetSize = mspRenderTarget->GetSize();
+		D2D1_SIZE_F rtSize = mspRenderTarget->GetSize();
 
 		mspRenderTarget->DrawText(
 			click,
 			ARRAYSIZE(click) - 1,
 			mspTextFormat.Get(),
-			D2D1::RectF(900.0f, 20.0f, renderTargetSize.width, renderTargetSize.height),
+			D2D1::RectF(900.0f, 20.0f, rtSize.width, rtSize.height),
 			mspBrush.Get()
 		);
-
-		static const WCHAR player1[] = L"Player1 : ";
-		static const WCHAR player2[] = L"Player2 : ";
 
 		mspRenderTarget->DrawText(
 			player1,
 			ARRAYSIZE(player1) - 1,
 			mspTextFormat.Get(),
-			D2D1::RectF(900.0f, 200.0f, renderTargetSize.width, renderTargetSize.height),
+			D2D1::RectF(900.0f, 200.0f, rtSize.width, rtSize.height),
 			mspBrush.Get()
 		);
 
 		mspRenderTarget->DrawText(
 			player2,
-			ARRAYSIZE(player2) - 1,
+			ARRAYSIZE(player1) - 1,
 			mspTextFormat.Get(),
-			D2D1::RectF(900.0f, 400.0f, renderTargetSize.width, renderTargetSize.height),
+			D2D1::RectF(900.0f, 400.0f, rtSize.width, rtSize.height),
 			mspBrush.Get()
 		);
 
-		// TODO : Draw FlipCount, Scores
-		// 
-		//mspRenderTarget->DrawText(std::to_wstring(mFlipCount).c_str(),
-		//	-1, mspTextFormat.Get(), mCountRect, mspBrush.Get());
+		std::wstring flipCount = std::to_wstring(mFlipCount).c_str();
+		std::wstring player1Score = std::to_wstring(mPlayer1Score).c_str();
+		std::wstring player2Score = std::to_wstring(mPlayer2Score).c_str();
 
 
+		mspRenderTarget->DrawTextW(
+			std::to_wstring(mFlipCount).c_str(),
+			flipCount.size(), 
+			mspTextFormat.Get(), 
+			D2D1::RectF(980.0f, 20.0f, rtSize.width, rtSize.height),
+			mspBrush.Get()
+		);
 
-		//Gdiplus::StringFormat format1;
-		//format1.SetAlignment(Gdiplus::StringAlignmentCenter);
-		//format1.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-		//graphics.DrawString(std::to_wstring(mPlayer1Score).c_str(), -1,
-		//	&font, mScore1Rect, &format1, &brush);
+		mspRenderTarget->DrawTextW(
+			std::to_wstring(mPlayer1Score).c_str(),
+			player1Score.size(), 
+			mspTextFormat.Get(), 
+			D2D1::RectF(980.0f, 200.0f, rtSize.width, rtSize.height),
+			mspBrush.Get()
+		);
 
-		//Gdiplus::StringFormat format2;
-		//format2.SetAlignment(Gdiplus::StringAlignmentCenter);
-		//format2.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-		//graphics.DrawString(std::to_wstring(mPlayer2Score).c_str(), -1,
-		//	&font, mScore2Rect, &format2, &brush);
+		mspRenderTarget->DrawTextW(
+			std::to_wstring(mPlayer2Score).c_str(),
+			player2Score.size(), 
+			mspTextFormat.Get(),
+			D2D1::RectF(980.0f, 400.0f, rtSize.width, rtSize.height),
+			mspBrush.Get()
+		);
 	}
 
 	void Game::SwitchPlayer()

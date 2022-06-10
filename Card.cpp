@@ -54,12 +54,10 @@ namespace concentration
 		auto pRT = mpFramework->GetRenderTarget();
 		auto size = mpBitmap->GetPixelSize();
 		D2D1_RECT_F rect{
-		0.0f, 0.0f,
-		static_cast<float>(0.0f + size.width),
-		static_cast<float>(0.0f + size.height)
+		mX, mY,
+		static_cast<float>(mX + size.width),
+		static_cast<float>(mY + size.height)
 		};
-		auto matTranslate = D2D1::Matrix3x2F::Translation(mX, mY);
-		pRT->SetTransform(matTranslate);
 
 		if (mIsFront)
 		{
